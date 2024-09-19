@@ -1,7 +1,7 @@
 # comsci 30 YEET
 
 ## demos
--cube
+- [jarome]()
 
-##projects
+## projects
 
