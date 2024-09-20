@@ -1,20 +1,50 @@
 // int scene
 
 
-let x = 100
-let y = 100
-let speed = 2
+let charX = 350;
+let charY = 400;
+let speed = 2;
+
 
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(500, 500);
 }
 
 function draw() {
-  background(220);
-  ballmove()
+  background(177);
+  charmove();
+  drawmaze();
+  hitDitection();
 }
 
-function ballmove(){
-  circle(x, y, 50)
-
+function charmove(){
+  fill(100, 255 ,100);
+  rect(charX, charY, 10, 10);
+  if (keyIsDown(87)){
+    charY = charY - speed;
+  }
+  if (keyIsDown(83)){
+    charY = charY + speed;
+  }
+  if (keyIsDown(65)){
+    charX = charX - speed;
+  }
+  if (keyIsDown(68)){
+    charX = charX + speed;
+  }
+}
+function drawmaze(){
+  fill(255, 100, 100);
+  rect(0, 0, 100, 500);
+  rect(400, 0, 100, 500);
+}
+function hitDitection(){
+  if (charX < 100 || charX > 390){
+    charX = 350;
+    charY = 400;
+  }
+  if (charY < 50 || charY > 450){
+    charX = 350;
+    charY = 400;
+  }
 }
