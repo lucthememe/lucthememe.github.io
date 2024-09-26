@@ -4,6 +4,14 @@
 let charX = 350;
 let charY = 400;
 let speed = 2;
+let wallLeftX = 0;
+let wallLeftY = 0;
+let wallLeftH = 500;
+let wallLeftW = 100;
+let wallRightX = 400;
+let wallRightY = 0;
+let wallRightW = 100;
+let wallRightH = 500;
 
 
 function setup() {
@@ -15,6 +23,13 @@ function draw() {
   charmove();
   drawmaze();
   hitDitection();
+}
+
+function isTouchingWall(wallX, wallY, wallW, wallH){
+  if(charX > wallX && charX < wallX + wallW && charY > wallY && charY < wallY + wallH){
+    charX = 350;
+    charY = 400;
+  }
 }
 
 function charmove(){
@@ -33,18 +48,14 @@ function charmove(){
     charX = charX + speed;
   }
 }
+
 function drawmaze(){
   fill(255, 100, 100);
-  rect(0, 0, 100, 500);
-  rect(400, 0, 100, 500);
+  rect(wallLeftX, wallLeftY, wallLeftW, wallLeftH);
+  rect(wallRightX, wallRightY, wallRightW, wallRightH);
 }
+
 function hitDitection(){
-  if (charX < 100 || charX > 390){
-    charX = 350;
-    charY = 400;
-  }
-  if (charY < 50 || charY > 450){
-    charX = 350;
-    charY = 400;
-  }
+  isTouchingWall(wallLeftX, wallLeftY, wallLeftW, wallLeftH)
+  isTouchingWall(wallRightX, wallRightY, wallRightW, wallRightH)
 }
