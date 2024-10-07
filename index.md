@@ -3,8 +3,8 @@
 ## demos
 - [jarome](jarome)
 - [genrative] art(line_art)
-
+- [perlin_noise_ball](perlin)
 ## projects
 - [int scene](int_scene)
-- [perlin_noise_ball](perlin)
+- [terranin_gen](terra)
 -
