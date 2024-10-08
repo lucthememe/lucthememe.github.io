@@ -6,5 +6,5 @@
 - [perlin_noise_ball](perlin)
 ## projects
 - [int scene](int_scene)
-- [terranin_gen](terra)
--
+- [terrain_gen](terra)
+- [arrys](arry_objt)

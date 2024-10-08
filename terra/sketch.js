@@ -2,9 +2,10 @@
 // 24/10/7
 
 let terrain = [];
-const NUMBER_OF_RECTS = 50000;
+const NUMBER_OF_RECTS = 1080;
 
 function setup() {
+  noStroke();
   createCanvas(windowWidth, windowHeight);
   let how_wide = width / NUMBER_OF_RECTS;
   genrateTerrain(how_wide);
@@ -12,20 +13,18 @@ function setup() {
 }
 
 function draw() {
-  background(220);
-  for (let someRect of terrain){
-    rect(someRect.x, someRect.y, someRect.w, someRect.h);
-  }
+  background(100);
+  spawn_cave();
 }
 
 function genrateTerrain(theWidth){
   let time = 0;
-  let timeDelta = 0.0001;
+  let timeDelta = 0.0003;
   for (let x = 0; x < width; x += theWidth){
     let theHeight = noise(time) * height;
     let someRect = spawn_rect(x, theHeight, theWidth);
     terrain.push(someRect);
-    time += timeDelta
+    time += timeDelta;
   }
 }
 
@@ -34,7 +33,13 @@ function spawn_rect(leftSide, rectHeight, rectWidth){
     x: leftSide,
     y: height - rectHeight,
     w: rectWidth,
-    h: rectHeight
+    h: 100
   };
   return theRect;
+}
+
+function spawn_cave(){
+  for (let someRect of terrain){
+    rect(someRect.x, someRect.y, someRect.w, someRect.h);
+  }
 }
