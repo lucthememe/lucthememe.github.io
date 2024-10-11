@@ -3,6 +3,7 @@
 
 let terrain = [];
 const NUMBER_OF_RECTS = 5000;
+let spawn_height = 0;
 
 
 function setup() {
@@ -14,6 +15,8 @@ function setup() {
 
 function draw() {
   background(0);
+  fill(255);
+  spawn_char(spawn_height + 50);
   spawn_beam();
 }
 
@@ -23,9 +26,11 @@ function genrateTerrain(theWidth){
   let timeDelta = 0.0002;
   for (let x = 0; x < width; x += theWidth){
     let theHeight = noise(time) * height;
-    let someRect = spawn_rect(x, theHeight, theWidth);
     counter++;
-    spawn_char(theHeight + 50);
+    if (counter === 1){
+      spawn_height = height - theHeight;
+    }
+    let someRect = spawn_rect(x, theHeight, theWidth);
     terrain.push(someRect);
     time += timeDelta;
   }
@@ -56,6 +61,5 @@ function spawn_char(Y){
   let x = 0;
   let speed = 20;
   let size = 20;
-
   rect(x, y, size, size);
 }
