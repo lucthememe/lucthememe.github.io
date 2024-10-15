@@ -25,7 +25,7 @@ function genrateTerrain(theWidth){
   let time = 0;
   let timeDelta = 0.0002;
   for (let x = 0; x < width; x += theWidth){
-    let theHeight = noise(time) * height;
+    let theHeight = noise(time) * (height *0.8);
     counter++;
     if (counter === 1){
       spawn_height = height - theHeight;
@@ -57,9 +57,11 @@ function spawn_beam(){
 }
 
 function spawn_char(Y){
-  let y = Y;
-  let x = 0;
-  let speed = 20;
-  let size = 20;
-  rect(x, y, size, size);
+  let char = {
+    y: Y,
+    x: 0,
+    speed: 20,
+    size: 20,
+  };
+  rect(char.x, char.y, char.size, char.size);
 }
