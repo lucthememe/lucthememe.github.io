@@ -4,20 +4,22 @@
 let terrain = [];
 const NUMBER_OF_RECTS = 5000;
 let spawn_height = 0;
+let char;
 
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   let how_wide = width / NUMBER_OF_RECTS;
   genrateTerrain(how_wide);
+  spawn_char(spawn_height + 50);
 
 }
 
 function draw() {
   background(0);
-  fill(255);
-  spawn_char(spawn_height + 50);
   spawn_beam();
+  draw_char();
+  move_char();
 }
 
 function genrateTerrain(theWidth){
@@ -56,12 +58,42 @@ function spawn_beam(){
   }
 }
 
+function in_beam(){
+  for (let somerect in terrain){
+    if (char.x > somerect.x && char.x < somerect.x + 10 && char.y > somerect.y && char.y < somerect.y + 100){
+
+
+    }
+  }
+}
+
 function spawn_char(Y){
-  let char = {
+  let the_char = {
     y: Y,
     x: 0,
     speed: 20,
     size: 20,
   };
+  char = the_char;
+  rect(char.x, char.y, char.size, char.size);
+}
+
+function move_char(){
+  if (keyIsDown(87)){
+    char.y = char.y + 10;
+  }
+  if (keyIsDown(83)){
+    char.y = char.y + 10;
+  }
+  if (keyIsDown(65)){
+    char.x = char.x + 10;
+  }
+  if (keyIsDown(68)){
+    char.x = char.x + 10;
+  }
+}
+
+function draw_char(){
+  fill(255);
   rect(char.x, char.y, char.size, char.size);
 }
