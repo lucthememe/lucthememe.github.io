@@ -10,9 +10,7 @@ let move_beam = 0;
 let beam_x = 0;
 let beam_y = 0;
 let live = 0;
-let curant_rect = 20;
-let beam_bottom = 0;
-let beam_top = 0;
+let curant_rect = 19;
 let dead = false
 
 /**
@@ -36,13 +34,23 @@ function setup() {
  * draws frames
  */
 function draw() {
-  background(0);
-  spawn_beam();
-  draw_char();
-  move_char();
-  in_beam();
-  move_beam += 5;
+  
+  if (dead === false){
+ 
+    background(0);
+    spawn_beam();
+    draw_char();
+    move_char();
+    in_beam();
+    move_beam += 5;
+    
+  } else {
+    background(0);
+    spawn_beam();
+  }
+ 
 }
+
 
 /**
  * genrates a wavey line
@@ -141,8 +149,8 @@ function spawn_beam(){
  * checks if the player is in the beam
  */
 function in_beam(){
-  beam_top = terrain[curant_rect].y;
-  beam_bottom = beam_top+100;
+  let beam_top = terrain[curant_rect].y;
+  let beam_bottom = beam_top+100;
   
   if (char.y < beam_top || char.y > beam_bottom - char.size){
       dead = true;
