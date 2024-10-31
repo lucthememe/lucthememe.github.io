@@ -9,6 +9,7 @@
 const MAP_WIDTH = 42;
 const MAP_HIGHT = 465;
 const grass_lvl = 4;
+let tile_size = 5
 
 // diffineing objects
 let grass = 1;
@@ -44,7 +45,7 @@ let floor_img;
 function setup() {
   createCanvas(windowWidth, windowHeight);
   let map = gen_grid(MAP_WIDTH, MAP_HIGHT);
-  console.log(map);
+  //console.log(map);
 }
 
 function draw() {
@@ -82,6 +83,7 @@ function gen_grid(coloms, rows){
         new_grid.push(treasure);
       }
     }
+    console.log(new_grid);
   }
   return new_grid;
 }

@@ -46,11 +46,9 @@ function draw_grid(){
   for (let y = 0; y < grid_heigth; y++){
     for (let x = 0; x < grid_width; x++){
       if (grid[x][y] === open_tile){
-        //fill(0);
         image(rock_img, x*square_size, y*square_size, square_size, square_size);
       }
       else if (grid[x][y] === wall_tile){
-        //fill(255);
         image(grass_img, x*square_size, y*square_size, square_size, square_size);
       }
       else if (grid[x][y] === player_tile){
