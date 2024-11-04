@@ -63,7 +63,7 @@ function preload(){
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  let map = gen_grid(MAP_WIDTH, MAP_HIGHT);
+  let map = gen_grid(MAP_WIDTH, MAP_HIGHT, grass_lvl, air_height);
 }
 
 function draw() {
@@ -73,9 +73,10 @@ function draw() {
 
 /**
  * genrates a random grid of ore and dirt with a space on top and stone walls
- * @param {*the height of the map} coloms 
- * @param {*the width of the map} rows 
- * @param {*the height of the first layer of the ground} grass_lvl
+ * @param {*coloms the height of the map}
+ * @param {*rows the width of the map} 
+ * @param {*grass the height of the first layer of the ground}
+ * @param {*air the height of the air}
  * @returns returns a grid map
  */
 function gen_grid(coloms, rows, grass, air){
@@ -108,7 +109,7 @@ function gen_grid(coloms, rows, grass, air){
       else if (funny_little_guy > 700 && funny_little_guy <= 800){
         row_temp.push(mineables.copper);
       }
-      else if (funny_little_guy > 900 && funny_little_guy <= 975){
+      else if (funny_little_guy > 800 && funny_little_guy <= 975){
         row_temp.push(mineables.gold);
       }
       else if (funny_little_guy > 975 && funny_little_guy <= 990){
