@@ -8,8 +8,11 @@
 //setting map
 const MAP_WIDTH = 42;
 const MAP_HIGHT = 465;
+const tile_size = 5;
+const air_height = 3;
 const grass_lvl = 4;
-let tile_size = 5;
+
+
 
 // diffineing objects
 let mineables ={
@@ -65,52 +68,70 @@ function setup() {
 
 function draw() {
   background(1, 51, 1);
-  draw_grid(map);
+  //draw_grid(map);
 }
 
 /**
  * genrates a random grid of ore and dirt with a space on top and stone walls
  * @param {*the height of the map} coloms 
  * @param {*the width of the map} rows 
+ * @param {*the height of the first layer of the ground} grass_lvl
  * @returns returns a grid map
  */
-function gen_grid(coloms, rows){
+function gen_grid(coloms, rows, grass, air){
   let new_grid = [];
-  for (let y = 5; y < rows; y++){
-    new_grid.push([]);
-    for (let x = 6; x < coloms - 5; x++){
+  let row_temp = [];
+
+  for (let y = 0; y <= air; y++){
+    new_grid.push(row_temp);
+    console.log(row_temp);
+  }
+
+  row_temp = [];
+
+  for (let x = 0; x <= coloms; x++){
+    row_temp.push(mineables.grass);
+  }
+  new_grid.push(row_temp);
+  console.log(row_temp);
+  row_temp = [];
+
+  for (let y = grass+1; y <= rows; y++){
+    for (let x = 6; x <= coloms - 5; x++){
       let funny_little_guy = random(1000);
       if (funny_little_guy <= 500){
-        new_grid.push(mineables.earth);
+        row_temp.push(mineables.earth);
       }
       else if (funny_little_guy > 500 && funny_little_guy <= 700){
-        new_grid.push(mineables.iron);
+        row_temp.push(mineables.iron);
       }
       else if (funny_little_guy > 700 && funny_little_guy <= 800){
-        new_grid.push(mineables.copper);
+        row_temp.push(mineables.copper);
       }
       else if (funny_little_guy > 900 && funny_little_guy <= 975){
-        new_grid.push(mineables.gold);
+        row_temp.push(mineables.gold);
       }
       else if (funny_little_guy > 975 && funny_little_guy <= 990){
-        new_grid.push(mineables.emrald);
+        row_temp.push(mineables.emrald);
       }
       else if (funny_little_guy > 990 && funny_little_guy <= 1000){
-        new_grid.push(mineables.treasure);
+        row_temp.push(mineables.treasure);
       }
     }
-    for (let y = 4)
+    new_grid.push(row_temp);
+    console.log(row_temp);
+    row_temp = [];
   }
   return new_grid;
 }
 
 
-function draw_grid(grid){
-  for (let y = 0; y < MAP_HIGHT; y++){
-    for (let x = 0; x < MAP_WIDTH; x++){
-      if (grid[x][y] === mineables.earth){
-        image(earth_img, x*square_size, y*square_size, square_size, square_size);
-      }
-    }
-  }
-}
+// function draw_grid(grid){
+//   for (let y = 0; y < MAP_HIGHT; y++){
+//     for (let x = 0; x < MAP_WIDTH; x++){
+//       if (grid[y][x] === mineables.earth){
+//         image(earth_img, x*square_size, y*square_size, square_size, square_size);
+//       }
+//     }
+//   }
+// }
