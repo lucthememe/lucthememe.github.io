@@ -11,6 +11,7 @@ const MAP_HIGHT = 465;
 const tile_size = 5;
 const air_height = 3;
 const grass_lvl = 4;
+const stone_wall_width = 5
 
 
 
@@ -48,27 +49,27 @@ let images ={
 
 
 function preload(){
-  images.earth_img;
-  images.stone_img;
-  images.iron_img;
-  images.copper_img;
-  images.gold_img;
-  images.emrald_img;
-  images.treasure_img;
-  images.grass_img;
-  images.floor_left_img;
-  images.floor_right_img;
-  images.floor_img;
+  images.earth_img = loadImage("earth.png");
+  images.stone_img = loadImage("rock.png");
+  images.iron_img = loadImage("iron.png");
+  images.copper_img = loadImage("copper.png");
+  images.gold_img = loadImage("gold.png");
+  images.emrald_img = loadImage("emrald.png");
+  images.treasure_img = loadImage("treasure.png");
+  images.grass_img = loadImage("grass.png");
+  images.floor_left_img = loadImage("floor_edge_left.png");
+  images.floor_right_img = loadImage("floor_edge_right.png");
+  images.floor_img = loadImage("floor.png");
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  let map = gen_grid(MAP_WIDTH, MAP_HIGHT, grass_lvl, air_height);
+  let map = gen_grid(MAP_WIDTH, MAP_HIGHT, grass_lvl, air_height, stone_wall_width);
 }
 
 function draw() {
   background(1, 51, 1);
-  //draw_grid(map);
+  draw_grid(map);
 }
 
 /**
@@ -77,9 +78,10 @@ function draw() {
  * @param {*rows the width of the map} 
  * @param {*grass the height of the first layer of the ground}
  * @param {*air the height of the air}
+ * @param {*stone_wall the width of the stone wall on the sides}
  * @returns returns a grid map
  */
-function gen_grid(coloms, rows, grass, air){
+function gen_grid(coloms, rows, grass, air, stone_wall){
   let new_grid = [];
   let row_temp = [];
 
@@ -89,16 +91,24 @@ function gen_grid(coloms, rows, grass, air){
   }
 
   row_temp = [];
-
-  for (let x = 0; x <= coloms; x++){
+  for (let rock = 0; rock <= stone_wall-1; rock++){
+    row_temp.push(mineables.stone);
+  }
+  for (let x = 5; x <= coloms-5; x++){
     row_temp.push(mineables.grass);
+  }
+  for (let rock = 0; rock <= stone_wall-1; rock++){
+    row_temp.push(mineables.stone);
   }
   new_grid.push(row_temp);
   console.log(row_temp);
   row_temp = [];
 
   for (let y = grass+1; y <= rows; y++){
-    for (let x = 6; x <= coloms - 5; x++){
+    for (let rock = 0; rock <= stone_wall-1; rock++){
+      row_temp.push(mineables.stone);
+    }
+    for (let x = 5; x <= coloms - 5; x++){
       let funny_little_guy = random(1000);
       if (funny_little_guy <= 500){
         row_temp.push(mineables.earth);
@@ -119,6 +129,9 @@ function gen_grid(coloms, rows, grass, air){
         row_temp.push(mineables.treasure);
       }
     }
+    for (let rock = 0; rock <= stone_wall-1; rock++){
+      row_temp.push(mineables.stone);
+    }
     new_grid.push(row_temp);
     console.log(row_temp);
     row_temp = [];
@@ -127,12 +140,12 @@ function gen_grid(coloms, rows, grass, air){
 }
 
 
-// function draw_grid(grid){
-//   for (let y = 0; y < MAP_HIGHT; y++){
-//     for (let x = 0; x < MAP_WIDTH; x++){
-//       if (grid[y][x] === mineables.earth){
-//         image(earth_img, x*square_size, y*square_size, square_size, square_size);
-//       }
-//     }
-//   }
-// }
+function draw_grid(grid){
+  for (let y = 0; y < MAP_HIGHT; y++){
+    for (let x = 0; x < MAP_WIDTH; x++){
+      if (grid[y][x] === mineables.earth){
+        image(earth_img, x*square_size, y*square_size, square_size, square_size);
+      }
+    }
+  }
+}
