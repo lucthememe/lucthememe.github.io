@@ -6,14 +6,16 @@
 // - describe what you did to take this project "above and beyond"
 
 //setting map
-const MAP_WIDTH = 42;
+const MAP_WIDTH = 43;
 const MAP_HIGHT = 465;
-const tile_size = 5;
+let tile_size = 0;
 const air_height = 3;
 const grass_lvl = 4;
-const stone_wall_width = 5
-
-
+const stone_wall_width = 5;
+let grid_map;
+const number_of_tiles = 14;
+let player_y = 0;
+let player_x =0;
 
 // diffineing objects
 let mineables ={
@@ -34,17 +36,17 @@ let ore_shop;
 let upgrade_shop;
 // setting up variables for img's
 let images ={
-  grass_img: 1,
-  earth_img: 2,
-  stone_img: 3,
-  iron_img: 4,
-  copper_img: 5,
-  gold_img: 6,
-  emrald_img: 7,
-  treasure_img: 8,
-  floor_left_img: 9,
-  floor_right_img: 10,
-  floor_img: 11,
+  grass_img: null,
+  earth_img: null,
+  stone_img: null,
+  iron_img: null,
+  copper_img: null,
+  gold_img: null,
+  emrald_img: null,
+  treasure_img: null,
+  floor_left_img: null,
+  floor_right_img: null,
+  floor_img: null,
 };
 
 
@@ -63,13 +65,15 @@ function preload(){
 }
 
 function setup() {
+  tile_size = windowWidth/number_of_tiles;
   createCanvas(windowWidth, windowHeight);
-  let map = gen_grid(MAP_WIDTH, MAP_HIGHT, grass_lvl, air_height, stone_wall_width);
+  grid_map = gen_grid(MAP_WIDTH, MAP_HIGHT, grass_lvl, air_height, stone_wall_width);
 }
 
 function draw() {
   background(1, 51, 1);
-  draw_grid(map);
+  moveplayer();
+  draw_grid(grid_map, tile_size, player_y, player_x);
 }
 
 /**
@@ -87,7 +91,6 @@ function gen_grid(coloms, rows, grass, air, stone_wall){
 
   for (let y = 0; y <= air; y++){
     new_grid.push(row_temp);
-    console.log(row_temp);
   }
 
   row_temp = [];
@@ -101,7 +104,6 @@ function gen_grid(coloms, rows, grass, air, stone_wall){
     row_temp.push(mineables.stone);
   }
   new_grid.push(row_temp);
-  console.log(row_temp);
   row_temp = [];
 
   for (let y = grass+1; y <= rows; y++){
@@ -133,19 +135,54 @@ function gen_grid(coloms, rows, grass, air, stone_wall){
       row_temp.push(mineables.stone);
     }
     new_grid.push(row_temp);
-    console.log(row_temp);
     row_temp = [];
   }
   return new_grid;
 }
 
 
-function draw_grid(grid){
+function draw_grid(grid, square_size, cam_y, cam_x){
   for (let y = 0; y < MAP_HIGHT; y++){
-    for (let x = 0; x < MAP_WIDTH; x++){
-      if (grid[y][x] === mineables.earth){
-        image(earth_img, x*square_size, y*square_size, square_size, square_size);
+    for (let x = 0; x < MAP_WIDTH+1; x++){
+      if (grid[y][x] === mineables.grass){
+        image(images.grass_img, (x + cam_x)*square_size, (y + cam_y)*square_size, square_size, square_size);
+      }
+      else if (grid[y][x] === mineables.earth){
+        image(images.earth_img, (x + cam_x)*square_size, (y + cam_y)*square_size, square_size, square_size);
+      }
+      else if (grid[y][x] === mineables.stone){
+        image(images.stone_img, (x + cam_x)*square_size, (y + cam_y)*square_size, square_size, square_size);
+      }
+      else if (grid[y][x] === mineables.iron){
+        image(images.iron_img, (x + cam_x)*square_size, (y + cam_y)*square_size, square_size, square_size);
+      }
+      else if (grid[y][x] === mineables.copper){
+        image(images.copper_img, (x + cam_x)*square_size, (y + cam_y)*square_size, square_size, square_size);
+      }
+      else if (grid[y][x] === mineables.gold){
+        image(images.gold_img, (x + cam_x)*square_size, (y + cam_y)*square_size, square_size, square_size);
+      }
+      else if (grid[y][x] === mineables.emrald){
+        image(images.emrald_img, (x + cam_x)*square_size, (y + cam_y)*square_size, square_size, square_size);
+      }
+      else if (grid[y][x] === mineables.treasure){
+        image(images.treasure_img, (x + cam_x)*square_size, (y + cam_y)*square_size, square_size, square_size);
       }
     }
+  }
+}
+
+function moveplayer(){
+  if (keyIsDown(83)){
+    player_y--;
+  }
+  if (keyIsDown(87)){
+    player_y++;
+  }
+  if (keyIsDown(68)){
+    player_x--;
+  }
+  if (keyIsDown(65)){
+    player_x++;
   }
 }
