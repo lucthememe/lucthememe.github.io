@@ -8,14 +8,19 @@
 //setting map
 const MAP_WIDTH = 43;
 const MAP_HIGHT = 465;
-let tile_size = 0;
 const air_height = 3;
 const grass_lvl = 4;
 const stone_wall_width = 5;
-let grid_map;
 const number_of_tiles = 14;
-let player_y = 0;
-let player_x =0;
+let tile_size = 0;
+let grid_map;
+
+let player ={
+  y: 0,
+  x: 0,
+  cam_y: 0,
+  cam_x: 0,
+};
 
 // diffineing objects
 let mineables ={
@@ -47,6 +52,9 @@ let images ={
   floor_left_img: null,
   floor_right_img: null,
   floor_img: null,
+  char_down: null,
+  char_left: null,
+  char_right: null,
 };
 
 
@@ -62,6 +70,9 @@ function preload(){
   images.floor_left_img = loadImage("floor_edge_left.png");
   images.floor_right_img = loadImage("floor_edge_right.png");
   images.floor_img = loadImage("floor.png");
+  images.char_down = loadImage("char_down.png");
+  images.char_left = loadImage("char_left.png");
+  images.char_right = loadImage("char_right.png");
 }
 
 function setup() {
@@ -72,8 +83,8 @@ function setup() {
 
 function draw() {
   background(1, 51, 1);
-  moveplayer();
-  draw_grid(grid_map, tile_size, player_y, player_x);
+  moveplayer(player.cam_y, player.cam_x, player.y, player.x);
+  draw_grid(grid_map, tile_size, player.cam_y, player.cam_x);
 }
 
 /**
@@ -172,17 +183,23 @@ function draw_grid(grid, square_size, cam_y, cam_x){
   }
 }
 
-function moveplayer(){
+function moveplayer(cam_y, cam_x, player_x, player_y){
   if (keyIsDown(83)){
-    player_y--;
+    if (player_y > 1){
+      cam_y--;
+      player_y--;
+    }
   }
   if (keyIsDown(87)){
+    cam_y++;
     player_y++;
   }
   if (keyIsDown(68)){
+    cam_x--;
     player_x--;
   }
   if (keyIsDown(65)){
+    cam_x++;
     player_x++;
   }
 }
