@@ -16,7 +16,7 @@ let tile_size = 0;
 let grid_map;
 
 let player ={
-  y: 0,
+  y: 1,
   x: 0,
   cam_y: 0,
   cam_x: 0,
@@ -83,7 +83,7 @@ function setup() {
 
 function draw() {
   background(1, 51, 1);
-  moveplayer(player.cam_y, player.cam_x, player.y, player.x);
+  moveplayer(player.y, player.x);
   draw_grid(grid_map, tile_size, player.cam_y, player.cam_x);
 }
 
@@ -183,23 +183,25 @@ function draw_grid(grid, square_size, cam_y, cam_x){
   }
 }
 
-function moveplayer(cam_y, cam_x, player_x, player_y){
+function moveplayer(player_y, player_x){
   if (keyIsDown(83)){
-    if (player_y > 1){
-      cam_y--;
+    if (player.cam_y >= -MAP_HIGHT + 9){
+      player.cam_y--;
       player_y--;
     }
   }
   if (keyIsDown(87)){
-    cam_y++;
-    player_y++;
+    if (player.cam_y <= 0){
+      player.cam_y++;
+      player_y++;
+    }
   }
   if (keyIsDown(68)){
-    cam_x--;
+    player.cam_x--;
     player_x--;
   }
   if (keyIsDown(65)){
-    cam_x++;
+    player.cam_x++;
     player_x++;
   }
 }
