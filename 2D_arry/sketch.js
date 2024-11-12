@@ -12,6 +12,7 @@ const air_height = 3;
 const grass_lvl = 4;
 const stone_wall_width = 5;
 const number_of_tiles = 14;
+const cam_offset = 4;
 let tile_size = 0;
 let grid_map;
 
@@ -20,25 +21,28 @@ let player ={
   x: 0,
   cam_y: 0,
   cam_x: 0,
+  inventory: [],
 };
 
 // diffineing objects
 let mineables ={
-  grass: 1,
-  earth: 2,
-  stone: 3,
-  iron: 4,
-  copper: 5,
-  gold: 6,
-  emrald: 7,
-  treasure: 8,
-  floor_left: 9,
-  floor_right: 10,
-  floor: 11,
+  grass: [1, 0],
+  earth: [2, 0],
+  stone: [3, 0],
+  iron: [4, 30],
+  copper: [5, 60],
+  gold: [6,],
+  emrald: [7,],
+  treasure: [8,],
+  floor_left: [9,],
+  floor_right: [10,],
+  floor: [11,],
 };
+
 let refuel_station;
 let ore_shop;
 let upgrade_shop;
+
 // setting up variables for img's
 let images ={
   grass_img: null,
@@ -56,7 +60,6 @@ let images ={
   char_left: null,
   char_right: null,
 };
-
 
 function preload(){
   images.earth_img = loadImage("earth.png");
@@ -83,7 +86,7 @@ function setup() {
 
 function draw() {
   background(1, 51, 1);
-  moveplayer(player.y, player.x);
+  moveplayer();
   draw_grid(grid_map, tile_size, player.cam_y, player.cam_x);
 }
 
@@ -183,25 +186,33 @@ function draw_grid(grid, square_size, cam_y, cam_x){
   }
 }
 
-function moveplayer(player_y, player_x){
-  if (keyIsDown(83)){
-    if (player.cam_y >= -MAP_HIGHT + tile_size){
+function moveplayer(){
+  if (keyIsDown(83) || keyIsDown(40)){
+    if (player.cam_y >= -MAP_HIGHT + number_of_tiles+1){
       player.cam_y--;
-      player_y--;
+      player.y--;
     }
   }
-  if (keyIsDown(87)){
+  if (keyIsDown(87) || keyIsDown(38)){
     if (player.cam_y <= 0){
       player.cam_y++;
-      player_y++;
+      player.y++;
     }
   }
-  if (keyIsDown(68)){
-    player.cam_x--;
-    player_x--;
+  if (keyIsDown(68) || keyIsDown(39)){
+    if (player.cam_x >= -MAP_WIDTH + number_of_tiles){
+      player.cam_x--;
+      player.x--;
+    }
   }
-  if (keyIsDown(65)){
-    player.cam_x++;
-    player_x++;
+  if (keyIsDown(65)  || keyIsDown(37)){
+    if (player.cam_x <= -1){
+      player.cam_x++;
+      player.x++;
+    }
   }
+}
+
+function mine_tile(next_tile){
+
 }
