@@ -185,7 +185,7 @@ function draw_grid(grid, square_size, cam_y, cam_x){
 
 function moveplayer(player_y, player_x){
   if (keyIsDown(83)){
-    if (player.cam_y >= -MAP_HIGHT + 9){
+    if (player.cam_y >= -MAP_HIGHT + tile_size){
       player.cam_y--;
       player_y--;
     }
