@@ -7,6 +7,7 @@
 - [bubble](bubbleP)
 - [SFX_DEMO](SFX_DEMO)
 - [grid_demo](11-grid)
+- [walker](walker)
 ## projects
 - [int scene](int_scene)
 - [terrain_gen](terra)

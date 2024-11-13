@@ -11,7 +11,7 @@ const MAP_HIGHT = 465;
 const air_height = 3;
 const grass_lvl = 4;
 const stone_wall_width = 5;
-const number_of_tiles = 14;
+const number_of_tiles = 50;
 const cam_offset = 4;
 let tile_size = 0;
 let grid_map;
@@ -31,9 +31,9 @@ let mineables ={
   stone: [3, 0],
   iron: [4, 30],
   copper: [5, 60],
-  gold: [6,],
-  emrald: [7,],
-  treasure: [8,],
+  gold: [6, 250],
+  emrald: [7, 2500],
+  treasure: [8,5000],
   floor_left: [9,],
   floor_right: [10,],
   floor: [11,],
@@ -182,6 +182,9 @@ function draw_grid(grid, square_size, cam_y, cam_x){
       else if (grid[y][x] === mineables.treasure){
         image(images.treasure_img, (x + cam_x)*square_size, (y + cam_y)*square_size, square_size, square_size);
       }
+      else if (grid[y][x] === 0){
+        
+      }
     }
   }
 }
@@ -191,28 +194,33 @@ function moveplayer(){
     if (player.cam_y >= -MAP_HIGHT + number_of_tiles+1){
       player.cam_y--;
       player.y--;
+      mine_tile(player.x, player.y);
     }
   }
   if (keyIsDown(87) || keyIsDown(38)){
     if (player.cam_y <= 0){
       player.cam_y++;
       player.y++;
+      mine_tile(player.x, player.y);
     }
   }
   if (keyIsDown(68) || keyIsDown(39)){
     if (player.cam_x >= -MAP_WIDTH + number_of_tiles){
       player.cam_x--;
       player.x--;
+      mine_tile(player.x, player.y);
     }
   }
   if (keyIsDown(65)  || keyIsDown(37)){
     if (player.cam_x <= -1){
       player.cam_x++;
       player.x++;
+      mine_tile(player.x, player.y);
     }
   }
 }
 
-function mine_tile(next_tile){
-
+function mine_tile(next_tile_x, next_tile_y){
+  player.inventory.push(grid_map[next_tile_y][next_tile_x]);
+  grid_map[next_tile_y][next_tile_x] = 0;
 }
