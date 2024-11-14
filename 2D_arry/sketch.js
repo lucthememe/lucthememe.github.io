@@ -11,16 +11,20 @@ const MAP_HIGHT = 465;
 const air_height = 3;
 const grass_lvl = 4;
 const stone_wall_width = 5;
-const number_of_tiles = 50;
+const number_of_tiles = 11;
 const cam_offset = 4;
+const fuelPrice = 5;
 let tile_size = 0;
 let grid_map;
 
 let player ={
-  y: 1,
-  x: 0,
+  y: -2,
+  x: -5,
   cam_y: 0,
   cam_x: 0,
+  lastMove: null,
+  fuel: 100,
+  bank: 0,
   inventory: [],
 };
 
@@ -34,9 +38,6 @@ let mineables ={
   gold: [6, 250],
   emrald: [7, 2500],
   treasure: [8,5000],
-  floor_left: [9,],
-  floor_right: [10,],
-  floor: [11,],
 };
 
 let refuel_station;
@@ -53,9 +54,7 @@ let images ={
   gold_img: null,
   emrald_img: null,
   treasure_img: null,
-  floor_left_img: null,
-  floor_right_img: null,
-  floor_img: null,
+  char_up: null,
   char_down: null,
   char_left: null,
   char_right: null,
@@ -70,9 +69,7 @@ function preload(){
   images.emrald_img = loadImage("emrald.png");
   images.treasure_img = loadImage("treasure.png");
   images.grass_img = loadImage("grass.png");
-  images.floor_left_img = loadImage("floor_edge_left.png");
-  images.floor_right_img = loadImage("floor_edge_right.png");
-  images.floor_img = loadImage("floor.png");
+  images.char_up = loadImage("char_up.png");
   images.char_down = loadImage("char_down.png");
   images.char_left = loadImage("char_left.png");
   images.char_right = loadImage("char_right.png");
@@ -85,9 +82,12 @@ function setup() {
 }
 
 function draw() {
+  if (fuelCheck(player.fuel) === true){
   background(1, 51, 1);
-  moveplayer();
+  sellAndRefuel(player.y, player.inventory, fuelPrice)
   draw_grid(grid_map, tile_size, player.cam_y, player.cam_x);
+  // displayPlayer(player.x*-1, player.y*-1, player.lastMove, tile_size);
+  }
 }
 
 /**
@@ -182,45 +182,94 @@ function draw_grid(grid, square_size, cam_y, cam_x){
       else if (grid[y][x] === mineables.treasure){
         image(images.treasure_img, (x + cam_x)*square_size, (y + cam_y)*square_size, square_size, square_size);
       }
-      else if (grid[y][x] === 0){
-        
-      }
     }
   }
 }
 
-function moveplayer(){
-  if (keyIsDown(83) || keyIsDown(40)){
-    if (player.cam_y >= -MAP_HIGHT + number_of_tiles+1){
+function keyPressed(){
+  if (key === "s" || keyCode === (40)){
+    if (player.cam_y >= -MAP_HIGHT + number_of_tiles+1 && inventoryCheck(player.inventory.length)){
       player.cam_y--;
       player.y--;
+      player.fuel--;
       mine_tile(player.x, player.y);
+      player.lastMove = "down"
     }
   }
-  if (keyIsDown(87) || keyIsDown(38)){
-    if (player.cam_y <= 0){
+  if (key === "w" || keyCode ===(38)){
+    if (player.cam_y <= 0 && inventoryCheck(player.inventory.length)){
       player.cam_y++;
       player.y++;
+      player.fuel--;
       mine_tile(player.x, player.y);
+      player.lastMove = "up"
     }
   }
-  if (keyIsDown(68) || keyIsDown(39)){
-    if (player.cam_x >= -MAP_WIDTH + number_of_tiles){
+  if (key === "d" || keyCode ===(39)){
+    if (player.cam_x >= -MAP_WIDTH + number_of_tiles && inventoryCheck(player.inventory.length)){
       player.cam_x--;
       player.x--;
+      player.fuel--;
       mine_tile(player.x, player.y);
+      player.lastMove = "right"
     }
   }
-  if (keyIsDown(65)  || keyIsDown(37)){
-    if (player.cam_x <= -1){
+  if (key === "a"  || keyCode ===(37)){
+    if (player.cam_x <= -1 && inventoryCheck(player.inventory.length)){
       player.cam_x++;
       player.x++;
+      player.fuel--;
       mine_tile(player.x, player.y);
+      player.lastMove = "left"
     }
   }
 }
 
 function mine_tile(next_tile_x, next_tile_y){
-  player.inventory.push(grid_map[next_tile_y][next_tile_x]);
-  grid_map[next_tile_y][next_tile_x] = 0;
+  next_tile_x = next_tile_x*-1
+  next_tile_y = next_tile_y*-1
+  if (grid_map[next_tile_y][next_tile_x] !== 0){
+    player.inventory.push(grid_map[next_tile_y][next_tile_x][1]);
+    grid_map[next_tile_y][next_tile_x] = 0;
+  }
 }
+
+function fuelCheck(fuel){
+  return(fuel > 0);
+}
+
+function inventoryCheck(inventory){
+  return(inventory < 31);
+}
+
+function sellAndRefuel(y, price){
+  if (y === -3){
+    for (let i = player.inventory.length; i > 0; i--){
+      player.bank += player.inventory[i-1]
+      player.inventory.pop();
+    }
+    if (player.fuel < 100 && player.bank >= 5){
+      player.fuel++;
+      player.bank -= 5;
+    }
+  }
+}
+
+// function displayPlayer(x, y, direction, square_size){
+//   let char = images.char_right
+
+//   if (direction === "up"){
+//     char = images.char_up
+//   }
+//   else if (direction === "down"){
+//     char = images.char_down
+//   }
+//   else if (direction === "left"){
+//     char = images.char_left
+//   }
+//   else if (direction === "right"){
+//     char = images.char_right
+//   }
+
+//   image(char, (x)*square_size, (y)*square_size, square_size, square_size);
+// }
