@@ -25,6 +25,8 @@ let player ={
   lastMove: null,
   fuel: 100,
   bank: 0,
+  fuelSize: 100,
+  inventorySize: 31,
   inventory: [],
 };
 
@@ -84,9 +86,10 @@ function setup() {
 function draw() {
   if (fuelCheck(player.fuel) === true){
   background(1, 51, 1);
-  sellAndRefuel(player.y, player.inventory, fuelPrice)
+  sellAndRefuel(player.y, fuelPrice, player.fuelSize)
   draw_grid(grid_map, tile_size, player.cam_y, player.cam_x);
-  // displayPlayer(player.x*-1, player.y*-1, player.lastMove, tile_size);
+  displayPlayerStats(player.bank, player.fuel, player.fuelSize, player.inventory.length, player.inventorySize);
+  displayPlayer(player.x*-1, player.y*-1, player.lastMove, tile_size);
   }
 }
 
@@ -188,7 +191,7 @@ function draw_grid(grid, square_size, cam_y, cam_x){
 
 function keyPressed(){
   if (key === "s" || keyCode === (40)){
-    if (player.cam_y >= -MAP_HIGHT + number_of_tiles+1 && inventoryCheck(player.inventory.length)){
+    if (player.cam_y >= -MAP_HIGHT + number_of_tiles+1 && inventoryCheck(player.inventory.length, player.inventorySize)){
       player.cam_y--;
       player.y--;
       player.fuel--;
@@ -197,7 +200,7 @@ function keyPressed(){
     }
   }
   if (key === "w" || keyCode ===(38)){
-    if (player.cam_y <= 0 && inventoryCheck(player.inventory.length)){
+    if (player.cam_y <= 0 && inventoryCheck(player.inventory.length, player.inventorySize)){
       player.cam_y++;
       player.y++;
       player.fuel--;
@@ -206,7 +209,7 @@ function keyPressed(){
     }
   }
   if (key === "d" || keyCode ===(39)){
-    if (player.cam_x >= -MAP_WIDTH + number_of_tiles && inventoryCheck(player.inventory.length)){
+    if (player.cam_x >= -MAP_WIDTH + number_of_tiles && inventoryCheck(player.inventory.length, player.inventorySize)){
       player.cam_x--;
       player.x--;
       player.fuel--;
@@ -215,7 +218,7 @@ function keyPressed(){
     }
   }
   if (key === "a"  || keyCode ===(37)){
-    if (player.cam_x <= -1 && inventoryCheck(player.inventory.length)){
+    if (player.cam_x <= -1 && inventoryCheck(player.inventory.length, player.inventorySize)){
       player.cam_x++;
       player.x++;
       player.fuel--;
@@ -238,38 +241,46 @@ function fuelCheck(fuel){
   return(fuel > 0);
 }
 
-function inventoryCheck(inventory){
-  return(inventory < 31);
+function inventoryCheck(inventory, inventorySize){
+  return(inventory < inventorySize);
 }
 
-function sellAndRefuel(y, price){
+function sellAndRefuel(y, price, fuelSize){
   if (y === -3){
     for (let i = player.inventory.length; i > 0; i--){
       player.bank += player.inventory[i-1]
       player.inventory.pop();
     }
-    if (player.fuel < 100 && player.bank >= 5){
+    if (player.fuel < fuelSize && player.bank >= price){
       player.fuel++;
-      player.bank -= 5;
+      player.bank -= price;
     }
   }
 }
 
-// function displayPlayer(x, y, direction, square_size){
-//   let char = images.char_right
+function displayPlayerStats(bank, fuel, fuelSize, inventory, inventorySize){
+  fill("black");
+  textSize(20);
+  text("Bank: $" + bank, 20, 20);
+  text("Fuel: " + fuel + "/" + fuelSize, 20, 40);
+  text("Inventory: " + inventory + "/" + inventorySize, 20, 60)
+}
 
-//   if (direction === "up"){
-//     char = images.char_up
-//   }
-//   else if (direction === "down"){
-//     char = images.char_down
-//   }
-//   else if (direction === "left"){
-//     char = images.char_left
-//   }
-//   else if (direction === "right"){
-//     char = images.char_right
-//   }
+function displayPlayer(x, y, direction, square_size){
+  let char = images.char_right
 
-//   image(char, (x)*square_size, (y)*square_size, square_size, square_size);
-// }
+  if (direction === "up"){
+    char = images.char_up
+  }
+  else if (direction === "down"){
+    char = images.char_down
+  }
+  else if (direction === "left"){
+    char = images.char_left
+  }
+  else if (direction === "right"){
+    char = images.char_right
+  }
+
+  image(char, (x)*square_size, (y)*square_size, square_size, square_size);
+}
