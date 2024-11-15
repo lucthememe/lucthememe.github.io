@@ -1,9 +1,7 @@
 // motherload
 // luc coutu
 // 24/10/30
-//
-// Extra for Experts:
-// - describe what you did to take this project "above and beyond"
+
 
 //setting map
 const MAP_WIDTH = 43;
