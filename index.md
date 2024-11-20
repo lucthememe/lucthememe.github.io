@@ -9,6 +9,8 @@
 - [grid_demo](11-grid)
 - [walker](walker)
 - [fireworks](fireworks)
+- [engen](engen)
+- [move_ball](move_ball)
 ## projects
 - [int scene](int_scene)
 - [terrain_gen](terra)
