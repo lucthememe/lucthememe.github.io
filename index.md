@@ -13,7 +13,9 @@
 - [move_ball](move_ball)
 - [colide_d2](colide)
 - [pyGame] (pyGame)
-
+- [oopIN] (oopIN)
+- [fractal_circles] (fractal_circles)
+- [fractal_tri] (fractal_tri)
 ## projects
 - [int scene](int_scene)
 - [terrain_gen](terra)
