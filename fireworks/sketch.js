@@ -5,7 +5,7 @@
 // Extra for Experts:
 // - describe what you did to take this project "above and beyond"
 
-const numOfPartical = 10000;
+const numOfPartical = 100;
 
 class Parical {
   constructor(x, y){
